@@ -1,0 +1,58 @@
+# NOTE: Please replace the placeholder <proxy-tier> with your proper (already created) host network.
+#       This setting is necessary to allow communication between the loadbalancer services and apps.
+
+version: '3'
+
+networks:
+    <proxy-tier>:
+        external: true
+
+volumes:
+    nginx_confd:
+    nginx_vhostd:
+    nginx_html:
+    ssl_certs:
+
+services:
+    nginx:
+        image: dreadlabs/loadbalancer:nginx-1.13
+        # Note: This option is ignored when deploying a stack in swarm mode with a (version 3) Compose file.
+        container_name: nginx
+        labels:
+            - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=true"
+        networks:
+            - <proxy-tier>
+        volumes:
+            - nginx_confd:/etc/nginx/conf.d
+            - nginx_vhostd:/etc/nginx/vhost.d
+            - nginx_html:/usr/share/nginx/html
+            - ssl_certs:/etc/nginx/certs:ro
+        ports:
+            - "80:80"
+            - "443:443"
+        restart: always
+
+    dockergen:
+        image: dreadlabs/loadbalancer:docker-gen-0.7.3
+        labels:
+            - "com.github.jrcs.letsencrypt_nginx_proxy_companion.docker_gen=true"
+        networks:
+            - <proxy-tier>
+        volumes:
+            - nginx_confd:/etc/nginx/conf.d
+            - nginx_vhostd:/etc/nginx/vhost.d
+            - nginx_html:/usr/share/nginx/html
+            - ssl_certs:/etc/nginx/certs:ro
+            - /var/run/docker.sock:/tmp/docker.sock:ro
+        restart: always
+
+    letsencrypt:
+        image: dreadlabs/loadbalancer:letsencrypt-1.7
+        networks:
+            - <proxy-tier>
+        volumes:
+            - nginx_confd:/etc/nginx/conf.d
+            - nginx_vhostd:/etc/nginx/vhost.d
+            - nginx_html:/usr/share/nginx/html
+            - ssl_certs:/etc/nginx/certs:rw
+            - /var/run/docker.sock:/var/run/docker.sock:ro
