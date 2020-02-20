@@ -47,7 +47,7 @@ services:
         restart: always
 
     letsencrypt:
-        image: dreadlabs/loadbalancer:letsencrypt-1.7
+        image: dreadlabs/loadbalancer:letsencrypt-1.12
         networks:
             - <proxy-tier>
         volumes:

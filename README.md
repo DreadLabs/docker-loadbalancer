@@ -7,7 +7,7 @@ It makes use of the following images:
 
   - `nginx:1.17`
   - `jwilder/docker-gen:0.7.3`
-  - `jrcs/letsencrypt-nginx-proxy-companion:v1.7`
+  - `jrcs/letsencrypt-nginx-proxy-companion:v1.12s`
   
 It uses the "separate containers" strategy to bind the docker socket to an internal
 service only for better security.
