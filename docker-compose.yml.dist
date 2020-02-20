@@ -15,7 +15,7 @@ volumes:
 
 services:
     nginx:
-        image: dreadlabs/loadbalancer:nginx-1.13
+        image: dreadlabs/loadbalancer:nginx-1.17
         # Note: This option is ignored when deploying a stack in swarm mode with a (version 3) Compose file.
         container_name: nginx
         labels:
