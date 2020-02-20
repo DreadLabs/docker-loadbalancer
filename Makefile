@@ -21,7 +21,7 @@ build:
 	docker build --file $(CONTEXT)/$(FILE) -t $(NS)/$(REPO):$(CONTEXT)-$(VERSION) $(CONTEXT)
 
 push:
-	docker push $(NS)/$(REPO):$(VERSION)-$(CONTEXT)
+	docker push $(NS)/$(REPO):$(CONTEXT)-$(VERSION)
 
 shell:
 	docker run --rm --name $(NAME)-$(CONTEXT)-$(INSTANCE) --interactive --tty $(NS)/$(REPO):$(CONTEXT)-$(VERSION) /bin/bash
